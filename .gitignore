@@ -40,3 +40,6 @@ next-env.d.ts
 *.swo
 *~
 
+# Explicitly ignore backend env
+/backend/.env
+

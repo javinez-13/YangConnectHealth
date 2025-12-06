@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { 
   Home, Calendar, Users, CalendarCheck, LogOut, Menu, X,
-  Bell, User
+  Bell, User, Heart
 } from 'lucide-react';
 import Image from 'next/image';
 import yangLogo from '../frontend/assets/yanglogo.jpg';
