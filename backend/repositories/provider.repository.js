@@ -57,24 +57,35 @@ class ProviderRepository {
   }
 
   async update(id, updates) {
-    const fields = [];
-    const values = [];
-    let paramCount = 1;
+    try {
+      const fields = [];
+      const values = [];
+      let paramCount = 1;
 
-    Object.keys(updates).forEach(key => {
-      if (updates[key] !== undefined && key !== 'id') {
-        fields.push(`${key} = $${paramCount}`);
-        values.push(updates[key]);
-        paramCount++;
-      }
-    });
+      Object.keys(updates).forEach(key => {
+        if (updates[key] !== undefined && key !== 'id') {
+          // Handle null values for photo_url
+          if (key === 'photo_url' && updates[key] === null) {
+            fields.push(`${key} = NULL`);
+          } else {
+            fields.push(`${key} = $${paramCount}`);
+            values.push(updates[key]);
+            paramCount++;
+          }
+        }
+      });
 
-    if (fields.length === 0) return null;
+      if (fields.length === 0) return null;
 
-    values.push(id);
-    const query = `UPDATE providers SET ${fields.join(', ')} WHERE id = $${paramCount} RETURNING *`;
-    const result = await pool.query(query, values);
-    return result.rows[0];
+      values.push(id);
+      const query = `UPDATE providers SET ${fields.join(', ')} WHERE id = $${paramCount} RETURNING *`;
+      const result = await pool.query(query, values);
+      return result.rows[0];
+    } catch (error) {
+      console.error('Provider repository update error:', error);
+      console.error('Update data:', { id, updates });
+      throw error;
+    }
   }
 
   async delete(id) {

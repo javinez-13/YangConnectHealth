@@ -1,4 +1,4 @@
-// File: C:\3A\OS-RESUME\Y\YangConnectHealth\frontend\app\page.js
+// File: C:\3A\HCI,APSDEV,IM\xyang\YangConnectHealth\frontend\app\page.js
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

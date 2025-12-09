@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     phone VARCHAR(20),
     date_of_birth DATE,
     role VARCHAR(50) DEFAULT 'patient',
+    profile_picture_url TEXT,
     two_factor_secret VARCHAR(255),
     two_factor_enabled BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -221,6 +221,45 @@ class AdminController {
     }
   }
 
+  async updateProvider(req, res) {
+    try {
+      const { id } = req.params;
+      const updates = req.body;
+
+      const provider = await providerRepository.findById(id);
+      if (!provider) {
+        return res.status(404).json({ error: 'Provider not found' });
+      }
+
+      // Handle empty photo_url to remove image
+      if (updates.photo_url === '') {
+        updates.photo_url = null;
+      }
+
+      const updated = await providerRepository.update(id, updates);
+      if (!updated) {
+        return res.status(400).json({ error: 'No fields to update' });
+      }
+
+      res.json({
+        message: 'Provider updated successfully',
+        provider: updated
+      });
+    } catch (error) {
+      console.error('Update provider error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        code: error.code,
+        detail: error.detail,
+        stack: error.stack
+      });
+      res.status(500).json({ 
+        error: 'Internal server error',
+        message: error.message || 'Failed to update provider'
+      });
+    }
+  }
+
   // Facility Management
   async getAllFacilities(req, res) {
     try {

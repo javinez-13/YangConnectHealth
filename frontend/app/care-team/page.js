@@ -118,9 +118,17 @@ export default function CareTeamPage() {
               {careTeam.map((provider) => (
                 <div key={provider.id} className="card">
                   <div className="flex items-start space-x-4 mb-4">
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <User className="h-10 w-10 text-primary" />
-                    </div>
+                    {provider.photo_url ? (
+                      <img
+                        src={provider.photo_url}
+                        alt={`${provider.first_name} ${provider.last_name}`}
+                        className="w-20 h-20 rounded-full object-cover flex-shrink-0 border-2 border-primary"
+                      />
+                    ) : (
+                      <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="h-10 w-10 text-primary" />
+                      </div>
+                    )}
                     <div className="flex-1">
                       <h3 className="font-semibold text-lg mb-1">
                         {provider.first_name} {provider.last_name}

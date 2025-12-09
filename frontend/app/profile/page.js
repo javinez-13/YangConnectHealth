@@ -1,14 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Layout from '../../components/Layout';
-import { User, Save } from 'lucide-react';
+import { User, Save, Upload, X } from 'lucide-react';
 import api from '../../lib/api';
 import { isAuthenticated, getUser, setUser } from '../../lib/auth';
 
 export default function ProfilePage() {
   const router = useRouter();
+  const fileInputRef = useRef(null);
   const [user, setUserState] = useState(null);
   const [formData, setFormData] = useState({
     first_name: '',
@@ -16,7 +17,10 @@ export default function ProfilePage() {
     email: '',
     phone: '',
     date_of_birth: '',
+    profile_picture_url: '',
   });
+  const [profileImage, setProfileImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -41,11 +45,45 @@ export default function ProfilePage() {
         email: userData.email || '',
         phone: userData.phone || '',
         date_of_birth: userData.date_of_birth || '',
+        profile_picture_url: userData.profile_picture_url || '',
       });
+      if (userData.profile_picture_url) {
+        setImagePreview(userData.profile_picture_url);
+      }
     } catch (error) {
       console.error('Error fetching profile:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image size must be less than 5MB');
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        setError('Please select an image file');
+        return;
+      }
+      setProfileImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setError('');
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setProfileImage(null);
+    setImagePreview(null);
+    setFormData({ ...formData, profile_picture_url: '' });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -56,12 +94,37 @@ export default function ProfilePage() {
     setSaving(true);
 
     try {
-      const response = await api.put('/users/me', formData);
+      const submitData = { ...formData };
+      
+      // If a new image was selected, convert it to base64
+      if (profileImage) {
+        const reader = new FileReader();
+        reader.readAsDataURL(profileImage);
+        await new Promise((resolve, reject) => {
+          reader.onloadend = () => {
+            submitData.profile_picture_url = reader.result;
+            resolve();
+          };
+          reader.onerror = reject;
+        });
+      } else if (!imagePreview && formData.profile_picture_url === '') {
+        // If image was removed, send null to clear it
+        submitData.profile_picture_url = null;
+      }
+
+      const response = await api.put('/users/me', submitData);
       setUser(response.data.user);
       setUserState(response.data.user);
+      setProfileImage(null);
+      if (response.data.user?.profile_picture_url) {
+        setImagePreview(response.data.user.profile_picture_url);
+      } else {
+        setImagePreview(null);
+      }
       setSuccess('Profile updated successfully!');
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to update profile');
+      console.error('Profile update error:', err);
+      setError(err.response?.data?.error || err.response?.data?.message || 'Failed to update profile');
     } finally {
       setSaving(false);
     }
@@ -96,6 +159,61 @@ export default function ProfilePage() {
 
         <div className="card">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Profile Picture Upload */}
+            <div className="flex flex-col items-center mb-6">
+              <label className="label mb-4">Profile Picture</label>
+              <div className="relative">
+                {imagePreview ? (
+                  <div className="relative">
+                    <img
+                      src={imagePreview}
+                      alt="Profile"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-primary"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                      title="Remove image"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-32 h-32 rounded-full bg-neutral-light border-4 border-dashed border-neutral flex items-center justify-center">
+                    <User className="h-12 w-12 text-neutral-dark" />
+                  </div>
+                )}
+              </div>
+              <div className="mt-4 flex gap-2">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                  id="profile-image-upload"
+                />
+                <label
+                  htmlFor="profile-image-upload"
+                  className="btn-outline flex items-center cursor-pointer"
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  {imagePreview ? 'Change Image' : 'Upload Image'}
+                </label>
+                {imagePreview && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="btn-outline text-red-600 hover:bg-red-50 flex items-center"
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Remove
+                  </button>
+                )}
+              </div>
+            </div>
+
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="label">First Name</label>

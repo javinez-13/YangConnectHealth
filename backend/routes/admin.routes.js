@@ -57,6 +57,7 @@ router.post('/providers',
   ],
   adminController.createProvider.bind(adminController)
 );
+router.put('/providers/:id', adminController.updateProvider.bind(adminController));
 router.delete('/providers/:id', adminController.deleteProvider.bind(adminController));
 // Provider availability
 router.get('/providers/:id/availability', adminController.getProviderAvailability.bind(adminController));

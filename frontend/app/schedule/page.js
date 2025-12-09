@@ -144,9 +144,17 @@ function ScheduleContent() {
                   onClick={() => handleProviderSelect(provider)}
                 >
                   <div className="flex items-start space-x-4">
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                      <User className="h-8 w-8 text-primary" />
-                    </div>
+                    {provider.photo_url ? (
+                      <img
+                        src={provider.photo_url}
+                        alt={`${provider.first_name} ${provider.last_name}`}
+                        className="w-16 h-16 rounded-full object-cover border-2 border-primary"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                        <User className="h-8 w-8 text-primary" />
+                      </div>
+                    )}
                     <div className="flex-1">
                       <h3 className="font-semibold text-lg">
                         {provider.first_name} {provider.last_name}

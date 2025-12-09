@@ -199,9 +199,17 @@ export default function DashboardPage() {
               <div className="space-y-4">
                 {careTeam.slice(0, 3).map((provider) => (
                   <div key={provider.id} className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <User className="h-5 w-5 text-primary" />
-                    </div>
+                    {provider.photo_url ? (
+                      <img
+                        src={provider.photo_url}
+                        alt={`${provider.first_name} ${provider.last_name}`}
+                        className="w-10 h-10 rounded-full object-cover border-2 border-primary"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                        <User className="h-5 w-5 text-primary" />
+                      </div>
+                    )}
                     <div className="flex-1">
                       <p className="font-semibold">
                         {provider.first_name} {provider.last_name}

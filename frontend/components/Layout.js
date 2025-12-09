@@ -9,16 +9,34 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import yangLogo from '../frontend/assets/yanglogo.jpg';
-import { getUser, logout } from '../lib/auth';
+import { getUser, logout, setUser } from '../lib/auth';
+import api from '../lib/api';
 
 export default function Layout({ children }) {
   const pathname = usePathname();
-  const [user, setUser] = useState(null);
+  const [user, setUserState] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    setUser(getUser());
+    const currentUser = getUser();
+    setUserState(currentUser);
+    if (currentUser) {
+      fetchUserProfile();
+    }
   }, []);
+
+  const fetchUserProfile = async () => {
+    try {
+      const response = await api.get('/users/me');
+      const userData = response.data.user;
+      setUserProfile(userData);
+      // Update stored user with latest profile data
+      setUser(userData);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -67,10 +85,20 @@ export default function Layout({ children }) {
 
         <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/20">
           <div className="flex items-center mb-4">
-            <User className="h-5 w-5 mr-2" />
+            {userProfile?.profile_picture_url ? (
+              <img
+                src={userProfile.profile_picture_url}
+                alt={`${userProfile.first_name} ${userProfile.last_name}`}
+                className="h-10 w-10 rounded-full object-cover mr-3 border-2 border-white/30"
+              />
+            ) : (
+              <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center mr-3 border-2 border-white/30">
+                <User className="h-5 w-5 text-white" />
+              </div>
+            )}
             <div>
-              <p className="font-semibold">{user?.first_name} {user?.last_name}</p>
-              <p className="text-sm text-white/70">{user?.email}</p>
+              <p className="font-semibold">{userProfile?.first_name || user?.first_name} {userProfile?.last_name || user?.last_name}</p>
+              <p className="text-sm text-white/70">{userProfile?.email || user?.email}</p>
             </div>
           </div>
           <button
@@ -127,6 +155,32 @@ export default function Layout({ children }) {
                   );
                 })}
               </nav>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/20">
+              <div className="flex items-center mb-4">
+                {userProfile?.profile_picture_url ? (
+                  <img
+                    src={userProfile.profile_picture_url}
+                    alt={`${userProfile.first_name} ${userProfile.last_name}`}
+                    className="h-10 w-10 rounded-full object-cover mr-3 border-2 border-white/30"
+                  />
+                ) : (
+                  <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center mr-3 border-2 border-white/30">
+                    <User className="h-5 w-5 text-white" />
+                  </div>
+                )}
+                <div>
+                  <p className="font-semibold">{userProfile?.first_name || user?.first_name} {userProfile?.last_name || user?.last_name}</p>
+                  <p className="text-sm text-white/70">{userProfile?.email || user?.email}</p>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 text-white/80 hover:text-white w-full px-4 py-2 rounded-lg hover:bg-white/10 transition-colors"
+              >
+                <LogOut className="h-5 w-5" />
+                <span>Logout</span>
+              </button>
             </div>
           </div>
         </div>

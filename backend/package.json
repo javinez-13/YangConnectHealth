@@ -6,7 +6,8 @@
     "dev": "node --watch server.js",
     "start": "node server.js",
     "init-db": "node database/init.js",
-    "create-admin": "node database/create-admin.js"
+    "create-admin": "node database/create-admin.js",
+    "migrate-profile-picture": "node database/migrate-add-profile-picture.js"
   },
   "dependencies": {
     "express": "^4.18.2",
