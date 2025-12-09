@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Layout from '../../components/Layout';
-import { User, Mail, Phone, MapPin, MessageSquare, Calendar, Shield } from 'lucide-react';
+import { User, Mail, Phone, MapPin, MessageSquare, Calendar } from 'lucide-react';
 import api from '../../lib/api';
 import { isAuthenticated } from '../../lib/auth';
 import Link from 'next/link';
@@ -12,7 +12,6 @@ export default function CareTeamPage() {
   const router = useRouter();
   const [careTeam, setCareTeam] = useState([]);
   const [facilities, setFacilities] = useState([]);
-  const [insurance, setInsurance] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState(null);
@@ -215,44 +214,7 @@ export default function CareTeamPage() {
           )}
         </section>
 
-        {/* Insurance/Billing */}
-        <section>
-          <h2 className="text-2xl font-semibold text-primary mb-6">Insurance & Billing</h2>
-          <div className="card">
-            <div className="flex items-center mb-4">
-              <Shield className="h-8 w-8 text-primary mr-3" />
-              <h3 className="text-xl font-semibold">Insurance Information</h3>
-            </div>
-            {insurance ? (
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-neutral-dark mb-1">Carrier</p>
-                  <p className="font-semibold">{insurance.carrier}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-neutral-dark mb-1">Policy ID</p>
-                  <p className="font-semibold">{insurance.policy_id}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-neutral-dark mb-1">Deductible</p>
-                  <p className="font-semibold">${insurance.deductible}</p>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <p className="text-neutral-dark mb-4">No insurance information on file.</p>
-                <button className="btn-outline">
-                  Upload Insurance Card
-                </button>
-              </div>
-            )}
-            <div className="mt-6 pt-6 border-t border-neutral">
-              <Link href="/billing" className="btn-primary">
-                View Billing & Payments
-              </Link>
-            </div>
-          </div>
-        </section>
+
       </div>
     </Layout>
   );

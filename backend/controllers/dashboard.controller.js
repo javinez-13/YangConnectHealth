@@ -12,9 +12,9 @@ class DashboardController {
       // Get user info
       const user = await userRepository.findById(userId);
 
-      // Get next appointment
-      const appointments = await appointmentRepository.findByPatientId(userId, { upcoming: true });
-      const nextAppointment = appointments.length > 0 ? appointments[0] : null;
+      // Get next pending or scheduled appointment
+      let allUpcomingAppointments = await appointmentRepository.findByPatientId(userId, { upcoming: true });
+      const nextAppointment = allUpcomingAppointments.find(apt => apt.status === 'pending' || apt.status === 'scheduled') || null;
 
       // Get recent appointments (last 5)
       const recentAppointments = await appointmentRepository.findByPatientId(userId);

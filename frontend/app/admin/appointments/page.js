@@ -306,6 +306,7 @@ export default function AdminAppointmentsPage() {
                         className={`px-3 py-1 rounded-full text-xs font-semibold border-0 ${getStatusColor(reg.status || 'pending')}`}
                       >
                         <option value="pending">Pending</option>
+                        <option value="scheduled">Scheduled</option>
                         <option value="confirmed">Confirmed</option>
                         <option value="cancelled">Cancelled</option>
                       </select>

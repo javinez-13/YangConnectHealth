@@ -86,18 +86,6 @@ CREATE TABLE IF NOT EXISTS event_registrations (
     UNIQUE(event_id, user_id)
 );
 
--- Insurance table
-CREATE TABLE IF NOT EXISTS insurance (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    carrier VARCHAR(255) NOT NULL,
-    policy_id VARCHAR(100),
-    group_number VARCHAR(100),
-    deductible DECIMAL(10, 2),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 -- Vitals table (for patient-entered data)
 CREATE TABLE IF NOT EXISTS vitals (
     id SERIAL PRIMARY KEY,

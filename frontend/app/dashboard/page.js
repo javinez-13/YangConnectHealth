@@ -58,17 +58,11 @@ export default function DashboardPage() {
     <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Welcome Section */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-primary mb-2">
-              Welcome back, {user?.first_name}!
-            </h1>
-            <p className="text-neutral-dark">Here&apos;s what&apos;s happening with your health</p>
-          </div>
-          <Link href="/profile" className="btn-outline flex items-center">
-            <User className="h-5 w-5 mr-2" />
-            Edit Profile
-          </Link>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-primary mb-2">
+            Welcome back, {user?.first_name}!
+          </h1>
+          <p className="text-neutral-dark">Here&apos;s what&apos;s happening with your health</p>
         </div>
 
         {/* Alerts */}
@@ -116,7 +110,7 @@ export default function DashboardPage() {
                         </span>
                       </div>
                       <div className="mt-4 flex space-x-2">
-                        <Link href={`/appointments/${nextAppointment.id}`} className="btn-outline text-sm py-2">
+                        <Link href="/appointments" className="btn-outline text-sm py-2">
                           View Details
                         </Link>
                         <Link href={`/schedule?reschedule=${nextAppointment.id}`} className="btn-secondary text-sm py-2">

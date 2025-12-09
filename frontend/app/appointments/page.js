@@ -253,11 +253,6 @@ export default function AppointmentsPage() {
                           </div>
                         )}
                       </div>
-                      {apt.status === 'completed' && (
-                        <button className="mt-3 text-primary hover:text-primary-light text-sm font-medium">
-                          View Visit Summary →
-                        </button>
-                      )}
                     </div>
                   </div>
                 </div>

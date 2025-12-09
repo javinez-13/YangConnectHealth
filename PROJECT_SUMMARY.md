@@ -58,8 +58,7 @@ A complete, production-ready healthcare portal with modern design, secure authen
 - ✅ Schedule appointment from provider card
 - ✅ My Facilities section
 - ✅ Facility details with map integration
-- ✅ Insurance & Billing section
-- ✅ Upload insurance card (UI ready)
+
 
 #### 6. Events Page
 - ✅ Upcoming events list
@@ -121,7 +120,7 @@ frontend/
 - `events` - Health classes, screenings, webinars
 - `event_registrations` - User event registrations
 - `provider_facilities` - Provider-facility relationships
-- `insurance` - Insurance information (schema ready)
+
 - `vitals` - Patient health vitals (schema ready)
 
 ## 🔐 Security Features
@@ -193,7 +192,7 @@ The following features are ready for implementation:
 - Video consultation integration
 - Health records management
 - Prescription management
-- Billing and payment integration
+
 - Waiting room queue system
 - Pre-visit questionnaires
 - Lab results viewing

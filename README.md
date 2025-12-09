@@ -13,7 +13,7 @@ A modern, full-stack healthcare portal built with Next.js (frontend) and Express
 - **Dashboard**: Personalized hub with next appointment, quick actions, vitals snapshot, and alerts
 - **Schedule**: Intuitive appointment booking with provider search, calendar view, and multi-step booking flow
 - **My Appointments**: View upcoming and past appointments with reschedule/cancel options
-- **Care Team**: Connect with providers, view facilities, and manage insurance information
+- **Care Team**: Connect with providers and view facilities
 - **Events**: Browse and register for health classes, screenings, and webinars
 
 ## Tech Stack
@@ -187,7 +187,7 @@ The frontend uses Next.js environment variables. Set `NEXT_PUBLIC_API_URL` if yo
 - Video consultation integration
 - Health records management
 - Prescription management
-- Billing and payment integration
+
 - Waiting room queue system
 - Pre-visit questionnaires
 
