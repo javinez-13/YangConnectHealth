@@ -11,7 +11,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-8 w-8 rounded-full object-cover" />
+              <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-8 w-8 rounded-full object-cover ring-2 ring-primary ring-offset-1" />
               <span className="ml-2 text-xl font-bold text-primary">YangConnect HealthPortal</span>
             </div>
             <div className="flex items-center space-x-4">

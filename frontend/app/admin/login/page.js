@@ -186,7 +186,7 @@ export default function AdminLoginPage() {
             )}
           </div>
 
-          <div className="flex items-center justify-between">
+          <div>
             <div className="flex items-center">
               <input
                 id="remember-me"
@@ -197,12 +197,6 @@ export default function AdminLoginPage() {
               <label htmlFor="remember-me" className="ml-2 block text-sm text-neutral-dark">
                 Remember me
               </label>
-            </div>
-
-            <div className="text-sm">
-              <Link href="/forgot-password" className="text-primary hover:text-primary-light">
-                Forgot password?
-              </Link>
             </div>
           </div>
 
