@@ -198,10 +198,6 @@ export default function AdminSchedulingPage() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-primary">Scheduling Management</h1>
-          <button className="btn-primary flex items-center">
-            <Plus className="h-5 w-5 mr-2" />
-            Block Time
-          </button>
         </div>
 
         {/* Provider Selection */}

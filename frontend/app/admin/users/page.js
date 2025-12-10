@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminLayout from '../../../components/admin/AdminLayout';
-import { Search, Plus, Edit, Trash2, User, Filter } from 'lucide-react';
+import { Search, Trash2, User, Filter } from 'lucide-react';
 import api from '../../../lib/api';
 import { isAuthenticated, getUser } from '../../../lib/auth';
 
@@ -84,13 +84,6 @@ export default function AdminUsersPage() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-primary">User Management</h1>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="btn-primary flex items-center"
-          >
-            <Plus className="h-5 w-5 mr-2" />
-            Add User
-          </button>
         </div>
 
         {/* Filters */}
@@ -157,13 +150,7 @@ export default function AdminUsersPage() {
                   </td>
                   <td className="py-3 px-4">
                     <div className="flex items-center justify-end space-x-2">
-                      <button
-                        onClick={() => setEditingUser(user)}
-                        className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                        title="Edit"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </button>
+                      {/* Edit action removed per admin UX change */}
                       <button
                         onClick={() => handleDelete(user.id)}
                         className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
