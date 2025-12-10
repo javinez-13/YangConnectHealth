@@ -302,11 +302,52 @@ export default function AdminSchedulingPage() {
                 <div className="p-4 bg-neutral-light rounded">No availability set for this provider.</div>
               ) : (
                 <div className="grid grid-cols-1 gap-2">
-                  {availability.map((slot) => (
+                  {availability.map((slot) => {
+                    // Safely parse the datetime strings
+                    const parseDateTime = (dateStr, timeStr) => {
+                      if (!dateStr || !timeStr) return null;
+                      try {
+                        // Extract hours and minutes from time string (handle both "HH:mm" and "HH:mm:ss" formats)
+                        const timeParts = timeStr.split(':');
+                        if (timeParts.length < 2) return null;
+                        
+                        const hours = parseInt(timeParts[0], 10);
+                        const minutes = parseInt(timeParts[1], 10);
+                        
+                        if (isNaN(hours) || isNaN(minutes)) return null;
+                        
+                        // Create a Date object using the date and time
+                        const date = parseISO(dateStr);
+                        date.setHours(hours, minutes, 0, 0);
+                        
+                        // Validate the date
+                        return isNaN(date.getTime()) ? null : date;
+                      } catch (e) {
+                        console.error('Error parsing datetime:', { dateStr, timeStr, error: e });
+                        return null;
+                      }
+                    };
+
+                    const startDateTime = parseDateTime(slot.available_date, slot.start_time);
+                    const endDateTime = parseDateTime(slot.available_date, slot.end_time);
+                    const dateOnly = slot.available_date ? (() => {
+                      try {
+                        const parsed = parseISO(slot.available_date);
+                        return isNaN(parsed.getTime()) ? null : parsed;
+                      } catch (e) {
+                        return null;
+                      }
+                    })() : null;
+
+                    return (
                     <div key={slot.id} className="flex items-center justify-between p-3 border rounded">
                       <div>
-                        <div className="font-semibold">{format(parseISO(slot.available_date), 'PPP')}</div>
-                        <div className="text-sm text-neutral-dark">{format(parseISO(slot.available_date + 'T' + slot.start_time), 'hh:mm a')} — {format(parseISO(slot.available_date + 'T' + slot.end_time), 'hh:mm a')}</div>
+                        <div className="font-semibold">{dateOnly ? format(dateOnly, 'PPP') : 'Invalid date'}</div>
+                        <div className="text-sm text-neutral-dark">
+                          {startDateTime && endDateTime 
+                            ? `${format(startDateTime, 'hh:mm a')} — ${format(endDateTime, 'hh:mm a')}`
+                            : 'Invalid time'}
+                        </div>
                       </div>
                       <div className="flex items-center space-x-2">
                         <button
@@ -335,7 +376,8 @@ export default function AdminSchedulingPage() {
                         </button>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

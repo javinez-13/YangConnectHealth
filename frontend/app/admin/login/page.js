@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -19,6 +19,9 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [requiresTwoFactor, setRequiresTwoFactor] = useState(false);
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [emailErrorVisible, setEmailErrorVisible] = useState(false);
+  const hideTimeoutRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -51,12 +54,21 @@ export default function AdminLoginPage() {
       router.push('/admin/dashboard');
     } catch (err) {
       console.error('Login error:', err);
+      // Field-level message for authentication failure
+      if (err.response?.status === 401 || /credential/i.test(err.response?.data?.error || '')) {
+        if (hideTimeoutRef.current) {
+          clearTimeout(hideTimeoutRef.current);
+          hideTimeoutRef.current = null;
+        }
+        setEmailError('Incorrect email or password');
+        setEmailErrorVisible(true);
+      }
       // Handle validation errors from express-validator
       if (err.response?.data?.errors) {
         const validationErrors = err.response.data.errors.map(e => e.msg).join(', ');
         setError(validationErrors);
       } else if (err.response?.data?.error) {
-        setError(err.response.data.error);
+        if (!emailError) setError(err.response.data.error);
       } else if (err.message) {
         setError(err.message);
       } else {
@@ -66,14 +78,33 @@ export default function AdminLoginPage() {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+        hideTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
+  const hideEmailErrorUserInitiated = (e) => {
+    if (!e?.nativeEvent?.isTrusted) return;
+    if (!emailError) return;
+    setEmailErrorVisible(false);
+    hideTimeoutRef.current = setTimeout(() => {
+      setEmailError('');
+      hideTimeoutRef.current = null;
+    }, 200);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-secondary-light py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-8">
         <div className="text-center">
           <div className="flex justify-center">
-            <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-12 w-12 rounded-full object-cover" />
+            <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-16 w-16 rounded-full object-cover ring-4 ring-primary ring-offset-2" />
           </div>
-          <h2 className="mt-6 text-3xl font-bold text-primary">YangConnect HealthPortal</h2>
+          <h2 className="mt-6 text-2xl font-bold text-primary">YangConnect HealthPortal</h2>
           <p className="mt-2 text-sm text-neutral-dark">Administrator sign in</p>
         </div>
 
@@ -87,16 +118,21 @@ export default function AdminLoginPage() {
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="label">Email Address</label>
+              {emailError && (
+                <p className={`text-sm text-red-600 mt-1 transition-opacity duration-200 ${emailErrorVisible ? 'opacity-100' : 'opacity-0'}`}>{emailError}</p>
+              )}
               <input
                 id="email"
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
-                className="input-field"
+                className={`input-field ${emailError ? 'ring-1 ring-red-400' : ''}`}
                 placeholder="admin@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onFocus={hideEmailErrorUserInitiated}
+                onMouseDown={hideEmailErrorUserInitiated}
               />
             </div>
 
@@ -113,6 +149,8 @@ export default function AdminLoginPage() {
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onFocus={hideEmailErrorUserInitiated}
+                  onMouseDown={hideEmailErrorUserInitiated}
                 />
                 <button
                   type="button"

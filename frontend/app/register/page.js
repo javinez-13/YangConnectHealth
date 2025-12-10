@@ -77,9 +77,9 @@ export default function RegisterPage() {
       <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-8">
         <div className="text-center">
           <div className="flex justify-center">
-            <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-12 w-12 rounded-full object-cover" />
+            <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-16 w-16 rounded-full object-cover ring-4 ring-primary ring-offset-2" />
           </div>
-          <h2 className="mt-6 text-3xl font-bold text-primary">YangConnect HealthPortal</h2>
+          <h2 className="mt-6 text-2xl font-bold text-primary">YangConnect HealthPortal</h2>
           <p className="mt-2 text-sm text-neutral-dark">Create your YangConnect account</p>
         </div>
 
@@ -210,7 +210,7 @@ export default function RegisterPage() {
             <p className="text-sm text-neutral-dark">
               Already have an account?{' '}
               <Link href="/login" className="text-primary hover:text-primary-light font-medium">
-                Sign in
+                Login
               </Link>
             </p>
           </div>

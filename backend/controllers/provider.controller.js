@@ -1,4 +1,5 @@
 import providerRepository from '../repositories/provider.repository.js';
+import providerAvailabilityRepository from '../repositories/providerAvailability.repository.js';
 
 class ProviderController {
   async getAll(req, res) {
@@ -35,6 +36,23 @@ class ProviderController {
       res.json({ providers });
     } catch (error) {
       console.error('Get providers by specialty error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+  async getAvailability(req, res) {
+    try {
+      const { providerId } = req.params;
+      // Verify provider exists
+      const provider = await providerRepository.findById(providerId);
+      if (!provider) {
+        return res.status(404).json({ error: 'Provider not found' });
+      }
+      // Fetch and return availability
+      const availability = await providerAvailabilityRepository.findByProvider(providerId);
+      res.json({ availability });
+    } catch (error) {
+      console.error('Get provider availability error:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   }

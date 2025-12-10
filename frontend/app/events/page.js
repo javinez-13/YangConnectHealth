@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Layout from '../../components/Layout';
-import { Calendar, Clock, MapPin, Video, Users, Bookmark, Share2, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, MapPin, Video, Users, Bookmark, Share2 } from 'lucide-react';
 import { format } from 'date-fns';
 import api from '../../lib/api';
 import { isAuthenticated } from '../../lib/auth';
@@ -138,9 +138,6 @@ export default function EventsPage() {
                   }`}>
                     {eventTypes[event.event_type] || event.event_type}
                   </span>
-                  {registered && (
-                    <CheckCircle className="h-5 w-5 text-green-600" />
-                  )}
                 </div>
 
                 <h3 className="text-xl font-semibold mb-3">{event.title}</h3>
@@ -185,7 +182,7 @@ export default function EventsPage() {
                 <div className="flex space-x-2">
                   {registered ? (
                     <button className="btn-outline text-sm py-2 flex-1" disabled>
-                      {reg?.status === 'confirmed' ? 'Confirmed' : reg?.status === 'pending' ? 'Pending Approval' : 'Registered'}
+                      {reg?.status === 'completed' ? 'Completed' : reg?.status === 'pending' ? 'Pending Approval' : reg?.status === 'scheduled' ? 'Scheduled' : 'Registered'}
                     </button>
                   ) : (
                     <button
@@ -223,11 +220,44 @@ export default function EventsPage() {
           <section className="mt-12">
             <h2 className="text-2xl font-semibold text-primary mb-6">My Registered Events</h2>
             <div className="grid md:grid-cols-2 gap-6">
-              {myRegistrations.map((event) => (
-                <div key={event.id} className="card bg-primary/5 border-2 border-primary/20">
-                  <div className="flex items-start justify-between mb-2">
+              {myRegistrations.map((event) => {
+                const getStatusColor = (status) => {
+                  switch (status) {
+                    case 'pending':
+                      return 'bg-yellow-100 text-yellow-800';
+                    case 'scheduled':
+                      return 'bg-blue-100 text-blue-800';
+                    case 'completed':
+                      return 'bg-green-100 text-green-800';
+                    case 'cancelled':
+                      return 'bg-red-100 text-red-800';
+                    default:
+                      return 'bg-neutral-100 text-neutral-800';
+                  }
+                };
+
+                const getStatusLabel = (status) => {
+                  switch (status) {
+                    case 'pending':
+                      return 'Pending Approval';
+                    case 'scheduled':
+                      return 'Scheduled';
+                    case 'completed':
+                      return 'Completed';
+                    case 'cancelled':
+                      return 'Cancelled';
+                    default:
+                      return 'Registered';
+                  }
+                };
+
+                return (
+                <div key={event.id} className="card">
+                  <div className="flex items-start justify-between mb-4">
                     <h3 className="font-semibold text-lg">{event.title}</h3>
-                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(event.status || 'pending')}`}>
+                      {getStatusLabel(event.status || 'pending')}
+                    </span>
                   </div>
                   <p className="text-sm text-neutral-dark mb-3">
                     {format(new Date(event.event_date), 'MMM dd, yyyy')} at {(() => {
@@ -249,7 +279,8 @@ export default function EventsPage() {
                     </a>
                   )}
                 </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         )}

@@ -47,26 +47,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Find Doctor Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Find a Doctor</h2>
-            <p className="text-neutral-dark">Search by specialty or doctor name</p>
-          </div>
-          <div className="max-w-2xl mx-auto">
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                placeholder="Search by specialty or doctor name..."
-                className="input-field flex-1"
-              />
-              <button className="btn-primary">Search</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Why Choose Us */}
       <section className="py-16 bg-neutral-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,15 +78,15 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="card">
               <p className="text-neutral-dark mb-4">&ldquo;The online booking system is so convenient. I can schedule appointments in minutes!&rdquo;</p>
-              <p className="font-semibold">- Sarah M.</p>
+              <p className="font-semibold">- Caya J.</p>
             </div>
             <div className="card">
-              <p className="text-neutral-dark mb-4">&ldquo;Being able to message my doctor directly has been a game-changer for my care.&rdquo;</p>
-              <p className="font-semibold">- John D.</p>
+              <p className="text-neutral-dark mb-4">&ldquo;Being able to see my doctor or nurse&apos;s availability directly has been a game-changer for my care.&rdquo;</p>
+              <p className="font-semibold">- Jaren A.</p>
             </div>
             <div className="card">
               <p className="text-neutral-dark mb-4">&ldquo;The portal makes managing my family&apos;s healthcare so much easier.&rdquo;</p>
-              <p className="font-semibold">- Maria L.</p>
+              <p className="font-semibold">- Ian F.</p>
             </div>
           </div>
         </div>
@@ -130,17 +110,17 @@ export default function Home() {
             </div>
             <div>
               <h4 className="font-semibold mb-4">Contact</h4>
-              <p className="text-white/80">Phone: (555) 123-4567</p>
-              <p className="text-white/80">Email: info@healthcare.com</p>
+              <p className="text-white/80">Phone: 09658422748</p>
+              <p className="text-white/80">Email: yangconnect@gmail.com</p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Hours</h4>
-              <p className="text-white/80">Mon-Fri: 8AM-6PM</p>
+              <p className="text-white/80">Mon-Fri: 8AM-5PM</p>
               <p className="text-white/80">Sat: 9AM-2PM</p>
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-white/20 text-center text-white/80">
-            <p>&copy; 2024 YangConnect HealthPortal. All rights reserved.</p>
+            <p>&copy; 2025 YangConnect HealthPortal. All rights reserved.</p>
           </div>
         </div>
       </footer>
