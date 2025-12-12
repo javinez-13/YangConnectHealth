@@ -24,6 +24,12 @@ api.interceptors.request.use((config) => {
       console.log('⚠️  No auth token found in localStorage');
     }
   }
+  
+  // Don't set Content-Type for FormData - let browser set it with boundary
+  if (config.data instanceof FormData) {
+    delete config.headers['Content-Type'];
+  }
+  
   return config;
 });
 

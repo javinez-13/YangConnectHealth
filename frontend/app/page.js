@@ -12,7 +12,7 @@ export default function Home() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-8 w-8 rounded-full object-cover ring-2 ring-primary ring-offset-1" />
-              <span className="ml-2 text-xl font-bold text-primary">YangConnect HealthPortal</span>
+              <span className="ml-2 text-xl font-bold text-primary">YangConnect Health Portal</span>
             </div>
             <div className="flex items-center space-x-4">
               <Link href="/services" className="text-neutral-dark hover:text-primary transition-colors">Services</Link>
@@ -120,7 +120,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-white/20 text-center text-white/80">
-            <p>&copy; 2025 YangConnect HealthPortal. All rights reserved.</p>
+            <p>&copy; 2025 YangConnect Health Portal. All rights reserved.</p>
           </div>
         </div>
       </footer>

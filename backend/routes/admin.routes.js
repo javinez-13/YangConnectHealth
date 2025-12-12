@@ -1,10 +1,43 @@
 import express from 'express';
 import { body } from 'express-validator';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 import adminController from '../controllers/admin.controller.js';
 import { adminAuth } from '../middlewares/adminAuth.middleware.js';
 import { handleValidationErrors } from '../middlewares/validation.middleware.js';
 
 const router = express.Router();
+
+// Configure multer for provider photo uploads
+const uploadsDir = path.join(process.cwd(), 'uploads', 'provider-photos');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadsDir);
+  },
+  filename: function (req, file, cb) {
+    const timestamp = Date.now();
+    const ext = path.extname(file.originalname);
+    const basename = path.basename(file.originalname, ext);
+    cb(null, `provider-${timestamp}${ext}`);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      cb(new Error('Only image files are allowed'), false);
+    } else {
+      cb(null, true);
+    }
+  }
+});
 
 // All admin routes require admin authentication
 router.use(adminAuth);
@@ -49,6 +82,7 @@ router.put('/appointments/:id',
 // Provider Management
 router.get('/providers', adminController.getAllProviders.bind(adminController));
 router.post('/providers',
+  upload.single('photo_url'),
   [
     body('first_name').trim().notEmpty(),
     body('last_name').trim().notEmpty(),
@@ -57,7 +91,7 @@ router.post('/providers',
   ],
   adminController.createProvider.bind(adminController)
 );
-router.put('/providers/:id', adminController.updateProvider.bind(adminController));
+router.put('/providers/:id', upload.single('photo_url'), adminController.updateProvider.bind(adminController));
 router.delete('/providers/:id', adminController.deleteProvider.bind(adminController));
 // Provider availability
 router.get('/providers/:id/availability', adminController.getProviderAvailability.bind(adminController));

@@ -72,7 +72,7 @@ export default function AppointmentsPage() {
     const aptDate = new Date(apt.appointment_date);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return aptDate >= today && apt.status === 'scheduled';
+    return aptDate >= today && (apt.status === 'scheduled' || apt.status === 'pending');
   });
 
   const pastAppointments = appointments.filter(apt => {

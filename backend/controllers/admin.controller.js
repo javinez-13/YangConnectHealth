@@ -210,7 +210,14 @@ class AdminController {
 
   async createProvider(req, res) {
     try {
-      const provider = await providerRepository.create(req.body);
+      const providerData = { ...req.body };
+      
+      // Handle file upload
+      if (req.file) {
+        providerData.photo_url = `/uploads/provider-photos/${req.file.filename}`;
+      }
+      
+      const provider = await providerRepository.create(providerData);
       res.status(201).json({
         message: 'Provider created successfully',
         provider
@@ -224,15 +231,18 @@ class AdminController {
   async updateProvider(req, res) {
     try {
       const { id } = req.params;
-      const updates = req.body;
+      const updates = { ...req.body };
 
       const provider = await providerRepository.findById(id);
       if (!provider) {
         return res.status(404).json({ error: 'Provider not found' });
       }
 
-      // Handle empty photo_url to remove image
-      if (updates.photo_url === '') {
+      // Handle file upload
+      if (req.file) {
+        updates.photo_url = `/uploads/provider-photos/${req.file.filename}`;
+      } else if (updates.photo_url === '') {
+        // Handle empty photo_url to remove image
         updates.photo_url = null;
       }
 
