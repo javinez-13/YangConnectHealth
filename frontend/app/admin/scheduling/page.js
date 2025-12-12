@@ -6,6 +6,7 @@ import AdminLayout from '../../../components/admin/AdminLayout';
 import { Calendar, Clock, User, Plus, Edit, Trash2, Upload, X } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import api from '../../../lib/api';
+import { getMediaUrl } from '../../../lib/media';
 import { isAuthenticated, getUser } from '../../../lib/auth';
 
 export default function AdminSchedulingPage() {
@@ -147,29 +148,29 @@ export default function AdminSchedulingPage() {
 
   const handleProviderSubmit = async () => {
     try {
-      const submitData = { ...providerFormData };
+      const submitFormData = new FormData();
       
-      // If a new image was selected, convert it to base64
+      // Append form fields
+      submitFormData.append('first_name', providerFormData.first_name);
+      submitFormData.append('last_name', providerFormData.last_name);
+      submitFormData.append('specialty', providerFormData.specialty);
+      submitFormData.append('bio', providerFormData.bio);
+      submitFormData.append('email', providerFormData.email);
+      submitFormData.append('phone', providerFormData.phone);
+      
+      // Handle image upload
       if (providerImage) {
-        const reader = new FileReader();
-        reader.readAsDataURL(providerImage);
-        await new Promise((resolve, reject) => {
-          reader.onloadend = () => {
-            submitData.photo_url = reader.result;
-            resolve();
-          };
-          reader.onerror = reject;
-        });
+        submitFormData.append('photo_url', providerImage);
       } else if (!providerImagePreview && providerFormData.photo_url === '') {
-        // If image was removed, send null to clear it
-        submitData.photo_url = null;
+        // If image was removed, send empty string to clear it
+        submitFormData.append('photo_url', '');
       }
 
       if (editingProvider) {
-        await api.put(`/admin/providers/${editingProvider.id}`, submitData);
+        await api.put(`/admin/providers/${editingProvider.id}`, submitFormData);
         alert('Provider updated successfully');
       } else {
-        await api.post('/admin/providers', submitData);
+        await api.post('/admin/providers', submitFormData);
         alert('Provider created successfully');
       }
       setShowEditProviderModal(false);
@@ -226,7 +227,7 @@ export default function AdminSchedulingPage() {
                   <div className="flex items-center">
                     {provider.photo_url ? (
                       <img
-                        src={provider.photo_url}
+                        src={getMediaUrl(provider.photo_url)}
                         alt={`${provider.first_name} ${provider.last_name}`}
                         className="h-10 w-10 rounded-full object-cover mr-2 border-2 border-primary"
                       />

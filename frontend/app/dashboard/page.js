@@ -6,6 +6,7 @@ import Layout from '../../components/Layout';
 import { Calendar, Clock, MapPin, User, Bell, Activity, Heart, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import api from '../../lib/api';
+import { getMediaUrl } from '../../lib/media';
 import { isAuthenticated } from '../../lib/auth';
 import Link from 'next/link';
 
@@ -195,7 +196,7 @@ export default function DashboardPage() {
                   <div key={provider.id} className="flex items-center space-x-3">
                     {provider.photo_url ? (
                       <img
-                        src={provider.photo_url}
+                        src={getMediaUrl(provider.photo_url)}
                         alt={`${provider.first_name} ${provider.last_name}`}
                         className="w-10 h-10 rounded-full object-cover border-2 border-primary"
                       />

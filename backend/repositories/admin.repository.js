@@ -172,6 +172,7 @@ class AdminRepository {
         (SELECT COUNT(*) FROM users WHERE role = 'patient') as total_patients,
         (SELECT COUNT(*) FROM users WHERE role = 'admin') as total_admins,
         (SELECT COUNT(*) FROM providers) as total_providers,
+        (SELECT COUNT(*) FROM facilities) as total_facilities,
         (SELECT COUNT(*) FROM users WHERE created_at >= $1) as new_users_this_week,
         (SELECT COUNT(*) FROM appointments WHERE appointment_date >= $1) as appointments_this_week,
         (SELECT COUNT(*) FROM events WHERE event_date >= CURRENT_DATE) as upcoming_events

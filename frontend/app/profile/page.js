@@ -94,25 +94,25 @@ export default function ProfilePage() {
     setSaving(true);
 
     try {
-      const submitData = { ...formData };
+      // Create FormData for multipart request
+      const submitFormData = new FormData();
       
-      // If a new image was selected, convert it to base64
+      // Add form fields
+      submitFormData.append('first_name', formData.first_name);
+      submitFormData.append('last_name', formData.last_name);
+      submitFormData.append('email', formData.email);
+      submitFormData.append('phone', formData.phone);
+      submitFormData.append('date_of_birth', formData.date_of_birth);
+      
+      // Add file if one was selected
       if (profileImage) {
-        const reader = new FileReader();
-        reader.readAsDataURL(profileImage);
-        await new Promise((resolve, reject) => {
-          reader.onloadend = () => {
-            submitData.profile_picture_url = reader.result;
-            resolve();
-          };
-          reader.onerror = reject;
-        });
+        submitFormData.append('profile_picture', profileImage);
       } else if (!imagePreview && formData.profile_picture_url === '') {
-        // If image was removed, send null to clear it
-        submitData.profile_picture_url = null;
+        // Send empty string to clear the image
+        submitFormData.append('profile_picture_url', '');
       }
 
-      const response = await api.put('/users/me', submitData);
+      const response = await api.put('/users/me', submitFormData);
       setUser(response.data.user);
       setUserState(response.data.user);
       setProfileImage(null);

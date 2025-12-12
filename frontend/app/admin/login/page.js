@@ -104,7 +104,7 @@ export default function AdminLoginPage() {
           <div className="flex justify-center">
             <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-16 w-16 rounded-full object-cover ring-4 ring-primary ring-offset-2" />
           </div>
-          <h2 className="mt-6 text-2xl font-bold text-primary">YangConnect HealthPortal</h2>
+          <h2 className="mt-6 text-2xl font-bold text-primary">YangConnect Health Portal</h2>
           <p className="mt-2 text-sm text-neutral-dark">Administrator sign in</p>
         </div>
 

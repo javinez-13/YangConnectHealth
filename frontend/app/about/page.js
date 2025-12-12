@@ -12,7 +12,7 @@ export default function AboutPage() {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center">
               <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-8 w-8 rounded-full object-cover ring-2 ring-primary ring-offset-1" />
-              <span className="ml-2 text-xl font-bold text-primary">YangConnect HealthPortal</span>
+              <span className="ml-2 text-xl font-bold text-primary">YangConnect Health Portal</span>
             </Link>
             <div className="flex items-center space-x-4">
               <Link href="/" className="text-neutral-dark hover:text-primary transition-colors">Home</Link>
@@ -105,7 +105,7 @@ export default function AboutPage() {
       {/* Footer */}
       <footer className="bg-primary text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>&copy; 2025 YangConnect HealthPortal. All rights reserved.</p>
+          <p>&copy; 2025 YangConnect Health Portal. All rights reserved.</p>
         </div>
       </footer>
     </div>

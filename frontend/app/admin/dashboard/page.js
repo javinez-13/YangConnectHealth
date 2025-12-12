@@ -189,7 +189,7 @@ export default function AdminDashboardPage() {
             <div className="text-center p-4 bg-neutral-light rounded-lg">
               <Building2 className="h-8 w-8 text-primary mx-auto mb-2" />
               <p className="text-sm text-neutral-dark mb-1">Facilities</p>
-              <p className="text-2xl font-bold">-</p>
+              <p className="text-2xl font-bold">{systemStats.total_facilities || 0}</p>
             </div>
             <div className="text-center p-4 bg-neutral-light rounded-lg">
               <Calendar className="h-8 w-8 text-primary mx-auto mb-2" />

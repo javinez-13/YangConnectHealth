@@ -6,6 +6,7 @@ import Layout from '../../components/Layout';
 import { User, Mail, Phone, MapPin, MessageSquare, Calendar } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import api from '../../lib/api';
+import { getMediaUrl } from '../../lib/media';
 import { isAuthenticated } from '../../lib/auth';
 import Link from 'next/link';
 
@@ -188,7 +189,7 @@ export default function CareTeamPage() {
                   <div className="flex items-start space-x-4 mb-4">
                     {provider.photo_url ? (
                       <img
-                        src={provider.photo_url}
+                        src={getMediaUrl(provider.photo_url)}
                         alt={`${provider.first_name} ${provider.last_name}`}
                         className="w-20 h-20 rounded-full object-cover flex-shrink-0 border-2 border-primary"
                       />

@@ -105,7 +105,7 @@ export default function LoginPage() {
           <div className="flex justify-center">
             <Image src={yangLogo} alt="YangConnect HealthPortal logo" className="h-16 w-16 rounded-full object-cover ring-4 ring-primary ring-offset-2" />
           </div>
-          <h2 className="mt-6 text-2xl font-bold text-primary">YangConnect HealthPortal</h2>
+          <h2 className="mt-6 text-2xl font-bold text-primary">YangConnect Health Portal</h2>
           <p className="mt-2 text-sm text-neutral-dark">Sign in to your health portal</p>
         </div>
 
@@ -237,7 +237,7 @@ export default function LoginPage() {
 
         <div className="mt-6 text-center">
           <p className="text-xs text-neutral-dark">
-            Secure login with biometric authentication available on supported devices
+            Secure login portal for YangConnect Health Portal users.
           </p>
         </div>
         <div className="mt-4 text-center">

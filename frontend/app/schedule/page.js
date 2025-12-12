@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import Layout from '../../components/Layout';
 import { Calendar as CalendarIcon, Clock, User, MapPin, Check } from 'lucide-react';
 import api from '../../lib/api';
+import { getMediaUrl } from '../../lib/media';
 import { isAuthenticated } from '../../lib/auth';
 
 function ScheduleContent() {
@@ -146,7 +147,7 @@ function ScheduleContent() {
                   <div className="flex items-start space-x-4">
                     {provider.photo_url ? (
                       <img
-                        src={provider.photo_url}
+                        src={getMediaUrl(provider.photo_url)}
                         alt={`${provider.first_name} ${provider.last_name}`}
                         className="w-16 h-16 rounded-full object-cover border-2 border-primary"
                       />

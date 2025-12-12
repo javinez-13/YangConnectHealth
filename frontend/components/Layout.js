@@ -11,6 +11,7 @@ import Image from 'next/image';
 import yangLogo from '../frontend/assets/yanglogo.jpg';
 import { getUser, logout, setUser } from '../lib/auth';
 import api from '../lib/api';
+import { getMediaUrl } from '../lib/media';
 
 export default function Layout({ children }) {
   const pathname = usePathname();
@@ -87,7 +88,7 @@ export default function Layout({ children }) {
           <div className="flex items-center mb-4">
             {userProfile?.profile_picture_url ? (
               <img
-                src={userProfile.profile_picture_url}
+                src={getMediaUrl(userProfile.profile_picture_url)}
                 alt={`${userProfile.first_name} ${userProfile.last_name}`}
                 className="h-10 w-10 rounded-full object-cover mr-3 border-2 border-white/30"
               />
@@ -160,7 +161,7 @@ export default function Layout({ children }) {
               <div className="flex items-center mb-4">
                 {userProfile?.profile_picture_url ? (
                   <img
-                    src={userProfile.profile_picture_url}
+                    src={getMediaUrl(userProfile.profile_picture_url)}
                     alt={`${userProfile.first_name} ${userProfile.last_name}`}
                     className="h-10 w-10 rounded-full object-cover mr-3 border-2 border-white/30"
                   />
